@@ -1,8 +1,38 @@
+using System.Threading.RateLimiting;
 using JwtAuthDemo.API.Context;
 using JwtAuthDemo.API.Extensions;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("frontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    
+    options.AddPolicy("auth", context =>
+    {
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            });
+    });
+});
 
 // Add services to the container.
 
@@ -11,13 +41,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(setup =>
 {
-    setup.SwaggerDoc("v1", new OpenApiInfo()
+    setup.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "JwtAuthDemoDb",
+        Title = "JwtAuthDemo",
         Version = "v1"
     });
 
-    setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Informe o token JWT no formato: Bearer {token}",
         Name = "Authorization",
@@ -27,12 +57,12 @@ builder.Services.AddSwaggerGen(setup =>
         BearerFormat = "JWT",
     });
 
-    setup.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    setup.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new OpenApiSecurityScheme()
+            new OpenApiSecurityScheme
             {
-                Reference = new OpenApiReference()
+                Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
                     Id = "Bearer"
@@ -45,6 +75,9 @@ builder.Services.AddSwaggerGen(setup =>
 builder.Services.AddApplicationDependencies(builder.Configuration);
 
 var app = builder.Build();
+
+app.UseCors("frontend");
+app.UseRateLimiter();
 
 using (IServiceScope scope = app.Services.CreateScope())
 {
