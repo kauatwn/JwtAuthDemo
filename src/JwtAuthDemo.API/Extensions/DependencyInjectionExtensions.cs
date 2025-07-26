@@ -46,12 +46,8 @@ public static class DependencyInjectionExtensions
 
     private static void AddJwtAuthentication(IServiceCollection services, IConfiguration configuration)
     {
-        var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>();
-
-        if (string.IsNullOrEmpty(jwtOptions?.SecretKey))
-        {
-            throw new ArgumentException("Invalid JWT configuration");
-        }
+        var jwtOptions = configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>()
+            ?? throw new InvalidOperationException("JWT configuration section is missing");
 
         services.AddAuthentication(options =>
         {
