@@ -1,4 +1,4 @@
-﻿# JwtAuthDemo
+﻿# Jwt Auth Demo
 
 Este projeto é uma API demonstrativa que implementa autenticação baseada em **JWT (JSON Web Token)**, com endpoints para login, registro, refresh de token e consulta de perfil do usuário autenticado. Utiliza **Entity Framework Core InMemory** para persistência, **rate limiting** para proteção de endpoints sensíveis e segue princípios de segurança modernos.
 
