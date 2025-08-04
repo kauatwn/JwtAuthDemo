@@ -18,7 +18,7 @@ public class AuthService(IOptions<JwtOptions> options, ITokenService tokenServic
     {
         User? user = await repository.GetByEmailAsync(request.Email);
 
-        if (user is null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+        if (user is null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
         {
             throw new UnauthorizedAccessException("Invalid credentials");
         }
@@ -76,7 +76,7 @@ public class AuthService(IOptions<JwtOptions> options, ITokenService tokenServic
     {
         User? user = await repository.GetByRefreshTokenAsync(refreshToken);
 
-        if (user is null || user.RefreshTokenExpiresAt < DateTime.UtcNow)
+        if (user is null || !user.RefreshTokenExpiresAt.HasValue || user.RefreshTokenExpiresAt < DateTime.UtcNow)
         {
             throw new UnauthorizedAccessException("Invalid or expired refresh token");
         }
