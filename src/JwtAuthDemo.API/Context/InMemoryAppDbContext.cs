@@ -23,7 +23,7 @@ public class InMemoryAppDbContext(DbContextOptions<InMemoryAppDbContext> options
             new User(
                 name: "Admin",
                 email: "admin@admin.com",
-                password: "$2a$11$h6UcM3ZVSZHP35jUbL874ejPEhewHMc/CoF95/HTQ19qE.YijWVRC" // This is a hashed password for "admin1234" using SHA256
+                passwordHash: "$2a$11$h6UcM3ZVSZHP35jUbL874ejPEhewHMc/CoF95/HTQ19qE.YijWVRC" // This is a hashed password for "admin1234" using SHA256
             )
             {
                 Id = 1
