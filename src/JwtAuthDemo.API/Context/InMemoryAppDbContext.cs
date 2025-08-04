@@ -15,7 +15,7 @@ public class InMemoryAppDbContext(DbContextOptions<InMemoryAppDbContext> options
         {
             entity.Property(u => u.Name).HasMaxLength(100);
             entity.Property(u => u.Email).HasMaxLength(256);
-            entity.Property(u => u.Password).HasMaxLength(256);
+            entity.Property(u => u.PasswordHash).HasMaxLength(256);
             entity.Property(u => u.RefreshToken).HasMaxLength(512);
         });
         
