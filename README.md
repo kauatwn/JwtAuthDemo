@@ -31,29 +31,46 @@ Você pode executar o projeto de duas formas:
 
 Clone este repositório em sua máquina local:
 
-```sh
+```bash
 git clone https://github.com/kauatwn/JwtAuthDemo.git
 ```
+
+### Configuração
+
+Antes de executar a aplicação, defina as opções de autenticação JWT no arquivo `appsettings.json`, localizado na pasta `src/JwtAuthDemo.API`. Exemplo:
+
+```json
+"JwtOptions": {
+  "Issuer": "http://localhost:5000", // API
+  "Audience": "http://localhost:4200", // Client
+  "SecretKey": "chave-secreta-de-256-bits-com-pelo-menos-32-caracteres",
+  "AccessTokenExpiration": "00:15:00",
+  "RefreshTokenExpiration": "7.00:00:00"
+}
+```
+
+> [!IMPORTANT]
+> Nunca compartilhe chaves secretas reais em repositórios públicos. Para ambientes reais, use [Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows), variáveis de ambiente ou um provedor de configuração seguro.
 
 ### Executar com Docker
 
 1. Navegue até a pasta raiz do projeto:
 
-```sh
-cd JwtAuthDemo/
-```
+    ```bash
+    cd JwtAuthDemo/
+    ```
 
 2. Construa a imagem Docker:
 
-```sh
-docker build -t jwtauthdemoapi:dev -f src/JwtAuthDemo.API/Dockerfile .
-```
+    ```bash
+    docker build -t jwtauthdemoapi:dev -f src/JwtAuthDemo.API/Dockerfile .
+    ```
 
 3. Execute o container:
 
-```sh
-docker run --rm -it -p 5000:8080 --name JwtAuthDemo.API jwtauthdemoapi:dev
-```
+    ```bash
+    docker run --rm -it -p 5000:8080 --name JwtAuthDemo.API jwtauthdemoapi:dev
+    ```
 
 Após executar os comandos acima, a API estará disponível em `http://localhost:5000`.
 
@@ -61,23 +78,23 @@ Após executar os comandos acima, a API estará disponível em `http://localhost
 
 1. Navegue até o diretório da API:
 
-```sh
-cd src/JwtAuthDemo.API/
-```
+    ```bash
+    cd src/JwtAuthDemo.API/
+    ```
 
 2. Restaure as dependências do projeto:
 
-```sh
-dotnet restore
-```
+    ```bash
+    dotnet restore
+    ```
 
 3. Inicie a aplicação:
 
-```sh
-dotnet run
-```
+    ```bash
+    dotnet run
+    ```
 
-Após rodar a aplicação, a API ficará acessível em `http://localhost:5080`.
+Após rodar a aplicação, a API ficará acessível em `http://localhost:5000`.
 
 ## Estrutura do Projeto
 
