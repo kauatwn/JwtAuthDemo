@@ -7,6 +7,7 @@ Este projeto é uma API demonstrativa que implementa autenticação baseada em *
 - [Pré-requisitos](#pré-requisitos)
 - [Como Executar](#como-executar)
   - [Clone o Projeto](#clone-o-projeto)
+  - [Configuração](#configuração)
   - [Executar com Docker](#executar-com-docker)
   - [Executar Localmente com .NET SDK](#executar-localmente-com-net-sdk)
 - [Estrutura do Projeto](#estrutura-do-projeto)
