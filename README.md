@@ -38,17 +38,19 @@ git clone https://github.com/kauatwn/JwtAuthDemo.git
 
 ### Configuração
 
-Antes de executar a aplicação, defina as opções de autenticação JWT no arquivo `appsettings.json`, localizado na pasta `src/JwtAuthDemo.API`. Exemplo:
+As opções de autenticação JWT já estão configuradas no arquivo `appsettings.json`, localizado na pasta `src/JwtAuthDemo.API`:
 
 ```json
 "JwtOptions": {
-  "Issuer": "http://localhost:5000", // API
-  "Audience": "http://localhost:4200", // Client
+  "Issuer": "http://localhost:5000",
+  "Audience": "http://localhost:4200",
   "SecretKey": "chave-secreta-de-256-bits-com-pelo-menos-32-caracteres",
   "AccessTokenExpiration": "00:15:00",
   "RefreshTokenExpiration": "7.00:00:00"
 }
 ```
+
+Caso necessário, você pode ajustar essas configurações de acordo com suas necessidades.
 
 > [!IMPORTANT]
 > Nunca compartilhe chaves secretas reais em repositórios públicos. Para ambientes reais, use [Secret Manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=windows), variáveis de ambiente ou um provedor de configuração seguro.
@@ -131,7 +133,12 @@ JwtAuthDemo/
 - **Banco InMemory:** Usuários são armazenados em memória, facilitando testes e demonstrações.
 - **Swagger:** Disponível em ambiente de desenvolvimento para explorar e testar endpoints.
 
+> [!TIP]
+> Para uma experiência mais amigável, foi desenvolvido um projeto Angular que consome esta API de autenticação. Você pode acessá-lo em: [Angular JWT Auth](https://github.com/kauatwn/angular-jwt-auth)
+
 ### Endpoints Principais
+
+![Swagger Endpoints](docs/images/swagger_endpoints.png)
 
 - `POST /api/auth/login` — Login do usuário (retorna access/refresh token)
 - `POST /api/auth/register` — Registro de novo usuário
